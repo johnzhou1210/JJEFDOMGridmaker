@@ -16,10 +16,10 @@ const resetGridButton = document.querySelector("#reset-grid-button");
 const canvas = document.querySelector("#canvas");
 
 //////////////////* FUNCTIONS */////////////////////////
+/* Renders the grid visually on a canvas. */
 function renderGrid() {
     // first clear canvas before rendering
     clearCanvas();
-
     for (let row of grid) {
         let rowDiv = canvas.appendChild(document.createElement("div"));
         for (let i = 0; i < numColumns; i++) {
@@ -31,15 +31,16 @@ function renderGrid() {
     }
 }
 
+/* Clears the rendered canvas. Does not clear the grid. */
 function clearCanvas() {
     for (let elem of canvas.querySelectorAll("*")) {
         elem.remove();
     }
 }
 
-// once you add a row or column at the beginning, numRows and numCols will be both equal to 1.
 /* Function to add 1 row to grid. */
 function addRow() {
+    // once you add a row or column at the beginning, numRows and numCols will be both equal to 1.
     if (numRows == 0 && numColumns == 0) {
         numRows = 1; numColumns = 1;
         grid = [[new Cell()]];
@@ -60,6 +61,7 @@ function addRow() {
 
 /* Function to add 1 column to grid. */
 function addColumn() {
+    // once you add a row or column at the beginning, numRows and numCols will be both equal to 1.
     if (numRows == 0 && numColumns == 0) {
         numRows = 1; numColumns = 1;
         grid = [[new Cell()]];
@@ -84,6 +86,7 @@ function removeColumn() {
     // Farhana will implement this
 } 
 
+/* Clears the grid. Also clears the canvas as well. */
 function resetGrid() {
     numRows = 0; numColumns = 0;
     grid = [];
@@ -93,11 +96,9 @@ function resetGrid() {
 //////////////////* EVENTS */////////////////////////
 window.onload = () => {
     resetGridButton.addEventListener("click", () => {
-        console.log("reset grid");
         resetGrid();
     });
     addRowButton.addEventListener("click", () => {
-        console.log("in here")
         addRow();
     });
     addColumnButton.addEventListener("click", () => {
