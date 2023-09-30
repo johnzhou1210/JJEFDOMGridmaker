@@ -1,0 +1,11 @@
+.cell {
+    border: .5px solid black;
+    display: inline-block;
+    box-sizing: border-box;
+    width: 25px;
+    height: 25px;
+}
+
+#canvas>div {
+    height: 25px;
+}
