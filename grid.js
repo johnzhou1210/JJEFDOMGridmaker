@@ -25,15 +25,18 @@ const fillGridButton = document.body.querySelector("#fill-grid-button");
 function renderGrid() {
     // first clear canvas before rendering
     clearCanvas();
+    let counter = 0;
     for (let row of grid) {
         let rowDiv = canvas.appendChild(document.createElement("div"));
         for (let i = 0; i < numColumns; i++) {
             let square = document.createElement("div");
             square.className = "cell";
+            square.id = counter + "" + i;
             square.style.backgroundColor = row[i].color;
+            square.onclick = colorCell;
             rowDiv.appendChild(square);
         }
-        
+        counter++;
     }
 }
 
@@ -129,6 +132,18 @@ function fillGrid() {
     renderGrid();
 }
 
+/* Color one cell in the grid with the selected color. */
+function colorCell() {
+    grid[this.id[0]][this.id[1]].color = selectedColor;
+
+    renderGrid();
+}
+
+/* Set the color in selectedColor variable */
+function setColor(chosenColor) {
+    selectedColor = chosenColor;
+}
+
 //////////////////* EVENTS */////////////////////////
 window.onload = () => {
     resetGridButton.addEventListener("click", () => {
@@ -150,6 +165,6 @@ window.onload = () => {
         fillGrid();
     });
     selectColor.addEventListener("change", (event) => {
-        selectedColor = event.target.value;
+        setColor(event.target.value);
     });
 };
