@@ -9,11 +9,15 @@ class Cell {
 let [numRows, numColumns] = [0, 0]; // variables to keep track of number of rows and number of columns.
 let grid = []; // Grid data is stored in here.
 
+let selectedColor = "";
+
 /* Getting references to html elements with query selector (by finding id) */
 const [addRowButton, removeRowButton] = [document.querySelector("#add-row-button"), document.querySelector("#remove-row-button")];
 const [addColumnButton, removeColumnButton] = [document.querySelector("#add-column-button"), document.querySelector("#remove-column-button")];
 const resetGridButton = document.querySelector("#reset-grid-button");
 const canvas = document.querySelector("#canvas");
+
+const selectColor = document.body.querySelector("#select-color-menu");
 
 //////////////////* FUNCTIONS */////////////////////////
 /* Renders the grid visually on a canvas. */
@@ -111,3 +115,7 @@ window.onload = () => {
         removeColumn();
     });
 };
+
+selectColor.addEventListener("click", () => {
+    selectedColor = selectColor.value;
+});
