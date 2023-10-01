@@ -9,25 +9,34 @@ class Cell {
 let [numRows, numColumns] = [0, 0]; // variables to keep track of number of rows and number of columns.
 let grid = []; // Grid data is stored in here.
 
+let selectedColor = "white";
+
 /* Getting references to html elements with query selector (by finding id) */
 const [addRowButton, removeRowButton] = [document.querySelector("#add-row-button"), document.querySelector("#remove-row-button")];
 const [addColumnButton, removeColumnButton] = [document.querySelector("#add-column-button"), document.querySelector("#remove-column-button")];
 const resetGridButton = document.querySelector("#reset-grid-button");
 const canvas = document.querySelector("#canvas");
 
+const selectColor = document.body.querySelector("#select-color-menu");
+const fillGridButton = document.body.querySelector("#fill-grid-button");
+
 //////////////////* FUNCTIONS */////////////////////////
 /* Renders the grid visually on a canvas. */
 function renderGrid() {
     // first clear canvas before rendering
     clearCanvas();
+    let counter = 0;
     for (let row of grid) {
         let rowDiv = canvas.appendChild(document.createElement("div"));
         for (let i = 0; i < numColumns; i++) {
             let square = document.createElement("div");
             square.className = "cell";
+            square.id = counter + "" + i;
+            square.style.backgroundColor = row[i].color;
+            square.onclick = colorCell;
             rowDiv.appendChild(square);
         }
-        
+        counter++;
     }
 }
 
@@ -113,6 +122,28 @@ function resetGrid() {
     clearCanvas();
 }
 
+/* Fill the entire grid with the selected color. */
+function fillGrid() {
+    for (let row of grid) {
+        for (let cell of row) {
+            cell.color = selectedColor;
+        }
+    }
+    renderGrid();
+}
+
+/* Color one cell in the grid with the selected color. */
+function colorCell() {
+    grid[this.id[0]][this.id[1]].color = selectedColor;
+
+    renderGrid();
+}
+
+/* Set the color in selectedColor variable */
+function setColor(chosenColor) {
+    selectedColor = chosenColor;
+}
+
 //////////////////* EVENTS */////////////////////////
 window.onload = () => {
     resetGridButton.addEventListener("click", () => {
@@ -129,5 +160,11 @@ window.onload = () => {
     });
     removeColumnButton.addEventListener("click", () => {
         removeColumn();
+    });
+    fillGridButton.addEventListener("click", () => {
+        fillGrid();
+    });
+    selectColor.addEventListener("change", (event) => {
+        setColor(event.target.value);
     });
 };
