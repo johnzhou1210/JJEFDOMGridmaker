@@ -130,7 +130,6 @@ window.onload = () => {
         fillGrid();
     });
     selectColor.addEventListener("change", (event) => {
-        console.log(event.target.value);
         selectedColor = event.target.value;
     });
 };
