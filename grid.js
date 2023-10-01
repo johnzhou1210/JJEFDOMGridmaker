@@ -85,11 +85,31 @@ function addColumn() {
 /* Function to remove 1 row from the grid. */
 function removeRow() {
    // Farhana will implement this
+   if (numRows > 0) {
+    grid.pop();
+    numRows--;
+    renderGrid();
+}
+if(numRows === 0){
+    numColumns = 0;
+}
+
 }
 
 /* Function to remove 1 column from the grid. */
 function removeColumn() {
     // Farhana will implement this
+    if (numColumns > 0) {
+        
+        for (let row=0; row<grid.length;row++) {
+            grid[row].pop();
+        }
+        numColumns--;
+        renderGrid();
+    }
+    if(numColumns === 0){
+        numRows = 0;
+    }
 } 
 
 /* Clears the grid. Also clears the canvas as well. */
