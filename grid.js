@@ -31,7 +31,7 @@ function renderGrid() {
         for (let i = 0; i < numColumns; i++) {
             let square = document.createElement("div");
             square.className = "cell";
-            square.id = counter + "" + i;
+            square.id = counter + " " + i;
             square.style.backgroundColor = row[i].color;
             square.onclick = colorCell;
             rowDiv.appendChild(square);
@@ -134,7 +134,8 @@ function fillGrid() {
 
 /* Color one cell in the grid with the selected color. */
 function colorCell() {
-    grid[this.id[0]][this.id[1]].color = selectedColor;
+    let ids = this.id.split(" ");
+    grid[ids[0]][ids[1]].color = selectedColor;
 
     renderGrid();
 }
