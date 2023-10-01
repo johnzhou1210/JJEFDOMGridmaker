@@ -79,6 +79,12 @@ function addColumn() {
 /* Function to remove 1 row from the grid. */
 function removeRow() {
    // Farhana will implement this
+   if (numRows > 0) {
+    grid.pop();
+    numRows--;
+    renderGrid();
+}
+
 }
 
 /* Function to remove 1 column from the grid. */
