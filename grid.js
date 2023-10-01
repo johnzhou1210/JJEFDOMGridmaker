@@ -9,7 +9,7 @@ class Cell {
 let [numRows, numColumns] = [0, 0]; // variables to keep track of number of rows and number of columns.
 let grid = []; // Grid data is stored in here.
 
-let selectedColor = "";
+let selectedColor = "white";
 
 /* Getting references to html elements with query selector (by finding id) */
 const [addRowButton, removeRowButton] = [document.querySelector("#add-row-button"), document.querySelector("#remove-row-button")];
@@ -18,6 +18,7 @@ const resetGridButton = document.querySelector("#reset-grid-button");
 const canvas = document.querySelector("#canvas");
 
 const selectColor = document.body.querySelector("#select-color-menu");
+const fillGridButton = document.body.querySelector("#fill-grid-button");
 
 //////////////////* FUNCTIONS */////////////////////////
 /* Renders the grid visually on a canvas. */
@@ -29,6 +30,7 @@ function renderGrid() {
         for (let i = 0; i < numColumns; i++) {
             let square = document.createElement("div");
             square.className = "cell";
+            square.style.backgroundColor = row[i].color;
             rowDiv.appendChild(square);
         }
         
@@ -97,6 +99,16 @@ function resetGrid() {
     clearCanvas();
 }
 
+/* Fill the entire grid with the selected color. */
+function fillGrid() {
+    for (let row of grid) {
+        for (let cell of row) {
+            cell.color = selectedColor;
+        }
+    }
+    renderGrid();
+}
+
 //////////////////* EVENTS */////////////////////////
 window.onload = () => {
     resetGridButton.addEventListener("click", () => {
@@ -114,8 +126,10 @@ window.onload = () => {
     removeColumnButton.addEventListener("click", () => {
         removeColumn();
     });
+    fillGridButton.addEventListener("click", () => {
+        fillGrid();
+    });
+    selectColor.addEventListener("click", () => {
+        selectedColor = selectColor.value;
+    });
 };
-
-selectColor.addEventListener("click", () => {
-    selectedColor = selectColor.value;
-});
