@@ -1,44 +1,43 @@
 /* Cell class. Each Cell object will represent one square on the grid. */
 class Cell {
-    constructor(color) {
-        this.color = (color == undefined) ? "white" : color;
-    }
+  constructor(color) {
+    this.color = (color == undefined) ? "white" : color;
+  }
 }
 
 //////////////////* VARIABLES AND REFERENCES */////////////////////////
 let [numRows, numColumns] = [0, 0]; // variables to keep track of number of rows and number of columns.
 let grid = []; // Grid data is stored in here.
 
+let selectedColor = "white";
+
 /* Getting references to html elements with query selector (by finding id) */
 const [addRowButton, removeRowButton] = [document.querySelector("#add-row-button"), document.querySelector("#remove-row-button")];
 const [addColumnButton, removeColumnButton] = [document.querySelector("#add-column-button"), document.querySelector("#remove-column-button")];
 const resetGridButton = document.querySelector("#reset-grid-button");
 const canvas = document.querySelector("#canvas");
-const filluncoloredButton = document.querySelector("#fill-uncolored-button");
-const emptyColorButton = document.querySelector("#empty-color-button");
 
+const selectColor = document.body.querySelector("#select-color-menu");
+const fillGridButton = document.body.querySelector("#fill-grid-button");
+const fillUncoloredButton = document.body.querySelector("#fill-uncolored-button");
+const emptyColoredButton = document.body.querySelector("#empty-colored-button");
 //////////////////* FUNCTIONS */////////////////////////
 /* Renders the grid visually on a canvas. */
 function renderGrid() {
     // first clear canvas before rendering
     clearCanvas();
+    let counter = 0;
     for (let row of grid) {
         let rowDiv = canvas.appendChild(document.createElement("div"));
         for (let i = 0; i < numColumns; i++) {
             let square = document.createElement("div");
             square.className = "cell";
-
-            //Eric:
-            //when rendering it wasnt using cell class in js so it didn't have color attribute
-            //it was using only the styles.css
-            let cell = new Cell(); // temp fix, problem when rerendering
-            square.cell = cell; // temporary fix for color
-            //color will be lost when renderGrid is called as cells are recreated everytime
-            
-
+            square.id = counter + " " + i;
+            square.style.backgroundColor = row[i].color;
+            square.onclick = colorCell;
             rowDiv.appendChild(square);
         }
-        
+        counter++;
     }
 }
 
@@ -124,39 +123,52 @@ function resetGrid() {
     clearCanvas();
 }
 
-/* Fills in uncolored cells with selected color in dropdown menu */
+/* Fill the entire grid with the selected color. */
+function fillGrid() {
+    for (let row of grid) {
+        for (let cell of row) {
+            cell.color = selectedColor;
+        }
+    }
+    renderGrid();
+}
+
+/* Color one cell in the grid with the selected color. */
+function colorCell() {
+    let ids = this.id.split(" ");
+    grid[ids[0]][ids[1]].color = selectedColor;
+
+    renderGrid();
+}
+
+/* Set the color in selectedColor variable */
+function setColor(chosenColor) {
+    selectedColor = chosenColor;
+}
+
+/* Fills all uncolored cells with selected color */
 function fillUncolored() {
-    //Eric
-    var elements = document.querySelectorAll(".cell");
-    //Get the selected color from the dropdown
-    var colorDropdown = document.getElementById("colorDropdown");
-    var selectedColor = colorDropdown.value;
-    elements.forEach(function (element) {
-        var cellcolor = element.cell.color; //gets color variable
-        if (cellcolor === "white") { //if no color then gives color
-            element.style.backgroundColor = selectedColor;
-            element.cell.color = selectedColor;
+    for (let row of grid) {
+        for (let cell of row) {
+            if(cell.color === "white"){
+                cell.color = selectedColor;
+            }
         }
-    });
-
-    //renderGrid();
+    }
+    renderGrid();
 }
 
-function emptyColor() {
-    //Eric
-    var elements = document.querySelectorAll(".cell");
-    elements.forEach(function (element) {
-        var cellcolor = element.cell.color; //gets color variable
-        if (cellcolor !== "white") { //if not white then sets to white
-            element.style.backgroundColor = "white";
-            element.cell.color = "white";
+/* Resets any colored cells to white */
+function emptyColoredCells() {
+    for (let row of grid) {
+        for (let cell of row) {
+            if (cell.color !== "white") {
+                cell.color = "white";
+            }
         }
-    });
+    }
+    renderGrid();
 }
-
-
-
-
 
 //////////////////* EVENTS */////////////////////////
 window.onload = () => {
@@ -175,10 +187,16 @@ window.onload = () => {
     removeColumnButton.addEventListener("click", () => {
         removeColumn();
     });
-    filluncoloredButton.addEventListener("click", () => {
+    fillGridButton.addEventListener("click", () => {
+        fillGrid();
+    });
+    selectColor.addEventListener("change", (event) => {
+        setColor(event.target.value);
+    });
+    fillUncoloredButton.addEventListener("click", () => {
         fillUncolored();
     });
-    emptyColorButton.addEventListener("click", () => {
-        emptyColor();
+    emptyColoredButton.addEventListener("click", () => {
+        emptyColoredCells();
     });
 };
