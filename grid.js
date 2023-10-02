@@ -20,6 +20,9 @@ const canvas = document.querySelector("#canvas");
 const selectColor = document.body.querySelector("#select-color-menu");
 const fillGridButton = document.body.querySelector("#fill-grid-button");
 
+const fillUncoloredButton = document.body.querySelector("#fill-uncolored-button");
+const emptyColoredButton = document.body.querySelector("#empty-colored-button");
+
 //////////////////* FUNCTIONS */////////////////////////
 /* Renders the grid visually on a canvas. */
 function renderGrid() {
@@ -145,6 +148,30 @@ function setColor(chosenColor) {
     selectedColor = chosenColor;
 }
 
+/* Fills all uncolored cells with selected color */
+function fillUncolored() {
+    for (let row of grid) {
+        for (let cell of row) {
+            if(cell.color === "white"){
+                cell.color = selectedColor;
+            }
+        }
+    }
+    renderGrid();
+}
+
+/* Resets any colored cells to white */
+function emptyColoredCells() {
+    for (let row of grid) {
+        for (let cell of row) {
+            if (cell.color !== "white") {
+                cell.color = "white";
+            }
+        }
+    }
+    renderGrid();
+}
+
 //////////////////* EVENTS */////////////////////////
 window.onload = () => {
     resetGridButton.addEventListener("click", () => {
@@ -167,5 +194,11 @@ window.onload = () => {
     });
     selectColor.addEventListener("change", (event) => {
         setColor(event.target.value);
+    });
+    fillUncoloredButton.addEventListener("click", () => {
+        fillUncolored();
+    });
+    emptyColoredButton.addEventListener("click", () => {
+        emptyColoredCells();
     });
 };
