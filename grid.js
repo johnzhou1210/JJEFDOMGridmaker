@@ -19,8 +19,10 @@ const canvas = document.querySelector("#canvas");
 
 const selectColor = document.body.querySelector("#select-color-menu");
 const fillGridButton = document.body.querySelector("#fill-grid-button");
+
 const fillUncoloredButton = document.body.querySelector("#fill-uncolored-button");
 const emptyColoredButton = document.body.querySelector("#empty-colored-button");
+
 //////////////////* FUNCTIONS */////////////////////////
 /* Renders the grid visually on a canvas. */
 function renderGrid() {
